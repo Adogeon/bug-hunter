@@ -1,0 +1,16 @@
+{
+  "name": "bug-hunter-server",
+  "version": "1.0.0",
+  "description": "Server to serve databse for bug-hunter program",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "watch": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.7.13"
+  }
+}
