@@ -1,8 +1,28 @@
+const path = require("path");
+const session = require("express-session");
 const express = require("express");
+const passport = require("passport");
+const routes = require("./routes");
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+// const isProduction = process.env.NODE_ENV === "production";
+
+app.use(require("morgan")("dev"));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  session({
+    secret: "bug-hunter",
+    cookie: { maxAge: 600000 },
+    resave: false,
+    saveUninitialized: false
+  })
+);
+app.use(passport.initialize());
+
+require("./config/passport.js");
+app.use(routes);
 
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/bug-hunter", {
@@ -11,22 +31,9 @@ mongoose.connect("mongodb://localhost/bug-hunter", {
   useUnifiedTopology: true,
   useFindAndModify: false
 });
+mongoose.set("debug", true);
 
 const PORT = 3001;
-
-const {
-  createReport,
-  readAllReports,
-  readReportsById,
-  updateReport,
-  deleteReport
-} = require("./handler/ReportHandler");
-
-app.post("/api/report", createReport);
-app.get("/api/report/all", readAllReports);
-app.get("/api/report/:reportId", readReportsById);
-app.put("/api/report/:reportId", updateReport);
-app.delete("/api/report/:reportId", deleteReport);
 
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
