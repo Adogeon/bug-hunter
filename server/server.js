@@ -1,7 +1,7 @@
 const path = require("path");
 const session = require("express-session");
 const express = require("express");
-const passport = require("passport");
+const passport = require("./config/passport");
 const routes = require("./routes");
 const app = express();
 
@@ -14,14 +14,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
     secret: "bug-hunter",
-    cookie: { maxAge: 600000 },
     resave: false,
     saveUninitialized: false
   })
 );
 app.use(passport.initialize());
+app.use(passport.session());
 
-require("./config/passport.js");
 app.use(routes);
 
 const mongoose = require("mongoose");
