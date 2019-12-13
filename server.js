@@ -5,12 +5,13 @@ const passport = require("./server/config/passport");
 const routes = require("./server/routes");
 const app = express();
 
-// const isProduction = process.env.NODE_ENV === "production";
-
+// Set up middle ware
 app.use(require("morgan")("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+
+// Set up Passport JS
 app.use(
   session({
     secret: "bug-hunter",
@@ -21,8 +22,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(routes);
-
+// Set up Mongoose
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/bug-hunter", {
   useCreateIndex: true,
@@ -32,7 +32,14 @@ mongoose.connect("mongodb://localhost/bug-hunter", {
 });
 mongoose.set("debug", true);
 
-const PORT = 3001;
+// Router
+app.use(routes);
+
+app.get("*", function(req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
+
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
