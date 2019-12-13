@@ -1,8 +1,8 @@
 const path = require("path");
 const session = require("express-session");
 const express = require("express");
-const passport = require("./config/passport");
-const routes = require("./routes");
+const passport = require("./server/config/passport");
+const routes = require("./server/routes");
 const app = express();
 
 // const isProduction = process.env.NODE_ENV === "production";
