@@ -23,7 +23,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Set up Mongoose
-const mongoose = require("mongoose");
+/* const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/bug-hunter", {
   useCreateIndex: true,
   useNewUrlParser: true,
@@ -31,6 +31,7 @@ mongoose.connect("mongodb://localhost/bug-hunter", {
   useFindAndModify: false
 });
 mongoose.set("debug", true);
+require("./server/model");*/
 
 // Router
 app.use(routes);

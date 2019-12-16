@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("../config/mongoose.js");
 
 const Schema = mongoose.Schema;
 
@@ -23,4 +23,6 @@ const NotificationSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("Notification", NotificationSchema);
+const Notification = mongoose.model("Notification", NotificationSchema);
+
+module.exports = Notification;

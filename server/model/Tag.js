@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("../config/mongoose.js");
 
 const Schema = mongoose.Schema;
 
@@ -9,4 +9,6 @@ const TagSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("Tag", TagSchema);
+const Tag = mongoose.model("Tag", TagSchema);
+
+module.exports = Tag;

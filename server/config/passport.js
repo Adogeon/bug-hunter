@@ -1,8 +1,7 @@
-const mongoose = require("mongoose");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
-const User = mongoose.model("User");
+const User = require("../model/User");
 
 passport.use(
   new LocalStrategy(async (username, password, cb) => {
