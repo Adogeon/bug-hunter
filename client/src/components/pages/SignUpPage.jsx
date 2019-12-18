@@ -10,12 +10,14 @@ const SignUp = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    alert(`${values.email} and ${values.password} has been submit`);
+    alert(
+      `${values.username},${values.email},${values.confirmPassword} and ${values.password} has been submit`
+    );
   };
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setValues({ ...value, [name]: value });
+    setValues({ ...values, [name]: value });
   };
 
   return (

@@ -10,7 +10,7 @@ const LogIn = () => {
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setValues({ ...value, [name]: value });
+    setValues({ ...values, [name]: value });
   };
 
   return (
