@@ -5,7 +5,6 @@ const Home = () => {
     <div>
       <div>Hello User</div>
       <div>Username:</div>
-      <div>Email:</div>
     </div>
   );
 };

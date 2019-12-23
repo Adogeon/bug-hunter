@@ -34,7 +34,17 @@ mongoose.set("debug", true);
 require("./server/model");*/
 
 // Router
-app.use(routes);
+// app.use(routes);
+
+app.post("/signup", passport.authenticate("signup"), (req, res) => {
+  console.log("logged in", req.user);
+  res.status(200).json(req.user);
+});
+
+app.post("/login", passport.authenticate("login"), (req, res) => {
+  console.log("logged in", req.user);
+  res.status(200).json(req.user);
+});
 
 app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));

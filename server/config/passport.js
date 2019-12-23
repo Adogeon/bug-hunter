@@ -1,40 +1,67 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-
 const User = require("../model/User");
+const { checkHash, createHash } = require("../helper/bcrypt.js");
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findOne({ _id: id });
+    if (user) {
+      return done(null, user);
+    } else {
+      return done(null, false, { error: "Can't find user id" });
+    }
+  } catch (err) {
+    return done(null, false, { error: err });
+  }
+});
 
 passport.use(
-  new LocalStrategy(async (username, password, cb) => {
+  "login",
+  new LocalStrategy(async (username, password, done) => {
     try {
-      const user = await User.findOne({ username: username });
-      if (!user || !user.validatePassword(password)) {
-        return cb(null, false, {
-          error: "username or password is invalid"
+      const userDoc = await User.findOne({ username: username });
+      if (!userDoc) {
+        return done(null, false, {
+          error: "User not Found with username"
         });
       } else {
-        return cb(null, user);
+        if (!checkHash(password, userDoc.password)) {
+          return done(null, false, {
+            error: "Password is not valid"
+          });
+        } else {
+          return done(null, userDoc);
+        }
       }
     } catch (err) {
-      return cb(null, false, { errors: err });
+      return done(err);
     }
   })
 );
 
-passport.serializeUser((user, cb) => {
-  cb(null, user.id);
-});
-
-passport.deserializeUser(async (id, cb) => {
-  try {
-    const user = await User.findOne({ _id: id });
-    if (user) {
-      return cb(null, user);
-    } else {
-      return cb(null, false, { error: "Can't find user id" });
+passport.use(
+  "signup",
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const userDoc = await User.findOne({ username: username });
+      if (userDoc) {
+        return done(null, false, { error: "User Already Exists" });
+      } else {
+        const newUserDoc = await User.create({
+          username: username,
+          password: createHash(password)
+        });
+        return done(null, newUserDoc);
+      }
+    } catch (err) {
+      return done(err);
     }
-  } catch (err) {
-    return cb(null, false, { error: err });
-  }
-});
+  })
+);
 
 module.exports = passport;
