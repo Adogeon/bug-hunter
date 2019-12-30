@@ -45,7 +45,6 @@ app.post("/api/signup", passport.authenticate("signup"), (req, res) => {
 });
 
 app.post("/api/login", passport.authenticate("login"), (req, res) => {
-  console.log(req.body);
   if (req.user || req.session.user)
     return res.status(200).json({ redirectURL: "/" });
   return res.redirect("/login");

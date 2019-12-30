@@ -23,8 +23,6 @@ passport.deserializeUser(async (id, done) => {
 passport.use(
   "login",
   new LocalStrategy(async (username, password, done) => {
-    console.log("username", username);
-    console.log("password", password);
     try {
       const userDoc = await User.findOne({ username: username });
       if (!userDoc) {
