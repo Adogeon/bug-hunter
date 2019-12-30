@@ -8,11 +8,21 @@ const SignUp = () => {
     confirmPassword: ""
   });
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    alert(
-      `${values.username},${values.email},${values.confirmPassword} and ${values.password} has been submit`
-    );
+
+    const response = await fetch(`/api/signup`, {
+      method: "post",
+      body: {
+        username: values.username,
+        email: values.email,
+        password: values.confirmPassword
+      }
+    });
+
+    if (response.status === 200) {
+      location.assign("/login");
+    }
   };
 
   const handleInputChange = event => {

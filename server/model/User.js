@@ -11,6 +11,9 @@ const UserSchema = new Schema({
     type: String,
     require: true
   },
+  email: {
+    type: String
+  },
   comment: {
     type: Schema.Types.ObjectId,
     ref: "Comment"

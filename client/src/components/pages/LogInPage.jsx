@@ -5,7 +5,27 @@ const LogIn = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    alert(`${values.email} and ${values.password} has been submit`);
+    console.log(values);
+    fetch(`/api/login`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: values.username,
+        password: values.password
+      })
+    })
+      .then(response => {
+        console.log(response);
+        if (response.status === 200) {
+          location.assign(response.redirectURL);
+        }
+      })
+      .catch(err => {
+        if (err);
+        console.error(err);
+      });
   };
 
   const handleInputChange = event => {
@@ -15,12 +35,12 @@ const LogIn = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="emailInput">Email:</label>
+      <label htmlFor="usernameInput">Username:</label>
       <input
         type="text"
-        name="email"
-        id="emailInput"
-        value={values.email}
+        name="username"
+        id="usernameInput"
+        value={values.username}
         onChange={handleInputChange}
       />
       <label htmlFor="passwordInput">Password:</label>

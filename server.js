@@ -7,9 +7,12 @@ const app = express();
 
 // Set up middle ware
 app.use(require("morgan")("dev"));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
 // Set up Passport JS
 app.use(
@@ -36,14 +39,16 @@ require("./server/model");*/
 // Router
 // app.use(routes);
 
-app.post("/signup", passport.authenticate("signup"), (req, res) => {
-  console.log("logged in", req.user);
-  res.status(200).json(req.user);
+app.post("/api/signup", passport.authenticate("signup"), (req, res) => {
+  if (req.user || req.session.user) return res.redirect("/");
+  return res.redirect("/signup");
 });
 
-app.post("/login", passport.authenticate("login"), (req, res) => {
-  console.log("logged in", req.user);
-  res.status(200).json(req.user);
+app.post("/api/login", passport.authenticate("login"), (req, res) => {
+  console.log(req.body);
+  if (req.user || req.session.user)
+    return res.status(200).json({ redirectURL: "/" });
+  return res.redirect("/login");
 });
 
 app.get("*", function(req, res) {
