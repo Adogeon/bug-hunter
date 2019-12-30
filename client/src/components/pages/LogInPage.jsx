@@ -19,7 +19,7 @@ const LogIn = () => {
       .then(response => {
         console.log(response);
         if (response.status === 200) {
-          location.assign(response.redirectURL);
+          window.location.assign("/");
         }
       })
       .catch(err => {

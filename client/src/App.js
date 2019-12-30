@@ -1,5 +1,4 @@
 import React from "react";
-import { render } from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Home, LogIn, SignUp } from "./components/pages";
 
@@ -24,4 +23,4 @@ const App = () => {
   );
 };
 
-render(<App />, document.getElementById("root"));
+export default App;

@@ -21,7 +21,7 @@ const SignUp = () => {
     });
 
     if (response.status === 200) {
-      location.assign("/login");
+      window.location.assign("/login");
     }
   };
 
