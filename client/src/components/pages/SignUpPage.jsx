@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { validateSignUpData } from "../../utils/validator";
 
 const SignUp = () => {
   const [values, setValues] = useState({
@@ -7,9 +8,16 @@ const SignUp = () => {
     password: "",
     confirmPassword: ""
   });
+  const [error, setError] = useState({});
 
   const handleSubmit = async event => {
     event.preventDefault();
+
+    const { errValid, errors } = validateSignUpData(values);
+    if (errValid) {
+      console.error(errors);
+      return setError(errors);
+    }
 
     fetch(`/api/signup`, {
       method: "post",
@@ -18,7 +26,8 @@ const SignUp = () => {
       },
       body: JSON.stringify({
         username: values.username,
-        password: values.confirmPassword
+        password: values.confirmPassword,
+        email: values.email
       })
     })
       .then(response => {
@@ -48,6 +57,7 @@ const SignUp = () => {
         value={values.username}
         onChange={handleInputChange}
       />
+      {error && error.username && <div>{error.username}</div>}
       <label htmlFor="emailInput">Email:</label>
       <input
         type="text"
@@ -56,6 +66,7 @@ const SignUp = () => {
         value={values.email}
         onChange={handleInputChange}
       />
+      {error && error.email && <div>{error.email}</div>}
       <label htmlFor="passwordInput">Password:</label>
       <input
         type="password"
@@ -64,6 +75,7 @@ const SignUp = () => {
         value={values.password}
         onChange={handleInputChange}
       />
+      {error && error.password && <div>{error.password}</div>}
       <label htmlFor="confirmPasswordInput">Confirm Password:</label>
       <input
         type="password"
@@ -72,6 +84,7 @@ const SignUp = () => {
         value={values.confirmPassword}
         onChange={handleInputChange}
       />
+      {error && error.confirmPassword && <div>{error.confirmPassword}</div>}
       <input type="submit" value="Submit" />
     </form>
   );

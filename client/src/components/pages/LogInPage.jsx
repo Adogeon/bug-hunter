@@ -1,10 +1,19 @@
 import React, { useState } from "react";
+import { validateLoginData } from "../../utils/validator";
 
 const LogIn = () => {
   const [values, setValues] = useState({ email: "", password: "" });
+  const [error, setError] = useState({});
 
   const handleSubmit = event => {
     event.preventDefault();
+
+    const { errValid, errors } = validateLoginData(values);
+    if (errValid) {
+      console.error(errors);
+      return setError(errors);
+    }
+
     fetch(`/api/login`, {
       method: "post",
       headers: {
@@ -42,6 +51,7 @@ const LogIn = () => {
         value={values.username}
         onChange={handleInputChange}
       />
+      {error && error.username && <div>{error.username}</div>}
       <label htmlFor="passwordInput">Password:</label>
       <input
         type="password"
@@ -50,6 +60,7 @@ const LogIn = () => {
         value={values.password}
         onChange={handleInputChange}
       />
+      {error && error.password && <div>{error.password}</div>}
       <input type="submit" value="Submit" />
     </form>
   );
