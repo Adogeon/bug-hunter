@@ -25,29 +25,19 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Set up Mongoose
-/* const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/bug-hunter", {
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-});
-mongoose.set("debug", true);
-require("./server/model");*/
-
 // Router
 // app.use(routes);
 
 app.post("/api/signup", passport.authenticate("signup"), (req, res) => {
-  if (req.user || req.session.user) return res.redirect("/");
-  return res.redirect("/signup");
+  if (req.user || req.session.user)
+    return res.status(200).json({ redirectURL: `/${req.user._id}` });
+  return res.status(404).json({ redirectURL: "/signup" });
 });
 
 app.post("/api/login", passport.authenticate("login"), (req, res) => {
   if (req.user || req.session.user)
-    return res.status(200).json({ redirectURL: "/" });
-  return res.redirect("/login");
+    return res.status(200).json({ redirectURL: `/${req.user._id}` });
+  return res.status(404).json({ redirectURL: "/login" });
 });
 
 app.get("*", function(req, res) {

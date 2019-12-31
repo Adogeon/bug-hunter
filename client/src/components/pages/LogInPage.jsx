@@ -5,7 +5,6 @@ const LogIn = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(values);
     fetch(`/api/login`, {
       method: "post",
       headers: {
@@ -17,10 +16,10 @@ const LogIn = () => {
       })
     })
       .then(response => {
-        console.log(response);
-        if (response.status === 200) {
-          window.location.assign("/");
-        }
+        return response.json();
+      })
+      .then(data => {
+        window.location.assign(data.redirectURL);
       })
       .catch(err => {
         if (err);

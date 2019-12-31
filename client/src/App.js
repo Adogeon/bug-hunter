@@ -14,7 +14,7 @@ const App = () => {
           <div>Sign Up </div>
           <SignUp />
         </Route>
-        <Route exact path="/">
+        <Route path="/">
           <div>Homepage</div>
           <Home />
         </Route>

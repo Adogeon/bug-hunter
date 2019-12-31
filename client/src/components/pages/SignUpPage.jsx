@@ -11,18 +11,26 @@ const SignUp = () => {
   const handleSubmit = async event => {
     event.preventDefault();
 
-    const response = await fetch(`/api/signup`, {
+    fetch(`/api/signup`, {
       method: "post",
-      body: {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
         username: values.username,
-        email: values.email,
         password: values.confirmPassword
-      }
-    });
-
-    if (response.status === 200) {
-      window.location.assign("/login");
-    }
+      })
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        window.location.assign(data.redirectURL);
+      })
+      .catch(err => {
+        if (err);
+        console.error(err);
+      });
   };
 
   const handleInputChange = event => {
